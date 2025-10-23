@@ -1,0 +1,334 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+
+const forgotPasswordCode = `// forgotPassword.js - Password Reset
+const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
+const { sendPasswordResetEmail } = require('./email');
+const User = require('./models/User');
+
+// Request password reset
+const requestPasswordReset = async (req, res) => {
+  try {
+    const { email } = req.body;
+    
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    // Generate reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetTokenHash = crypto.createHash('sha256').update(resetToken).digest('hex');
+    
+    // Save token to user (expires in 1 hour)
+    user.passwordResetToken = resetTokenHash;
+    user.passwordResetExpires = Date.now() + 60 * 60 * 1000;
+    await user.save();
+    
+    // Send email
+    await sendPasswordResetEmail(user.email, resetToken);
+    
+    res.json({ message: 'Password reset email sent' });
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+// Reset password
+const resetPassword = async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+    
+    const resetTokenHash = crypto.createHash('sha256').update(token).digest('hex');
+    
+    const user = await User.findOne({
+      passwordResetToken: resetTokenHash,
+      passwordResetExpires: { $gt: Date.now() }
+    });
+    
+    if (!user) {
+      return res.status(400).json({ error: 'Invalid or expired token' });
+    }
+    
+    // Update password
+    user.password = await bcrypt.hash(newPassword, 12);
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+    
+    res.json({ message: 'Password reset successful' });
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+module.exports = { requestPasswordReset, resetPassword };`;
+
+const userModelCode = `// models/User.js - Extended User Model
+const mongoose = require('mongoose');
+
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 6
+  },
+  passwordResetToken: {
+    type: String
+  },
+  passwordResetExpires: {
+    type: Date
+  }
+}, {
+  timestamps: true
+});
+
+module.exports = mongoose.model('User', userSchema);`;
+
+const emailServiceCode = `// email.js - Email Service for Password Reset
+const nodemailer = require('nodemailer');
+
+const createTransporter = () => {
+  return nodemailer.createTransporter({
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    secure: false,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS
+    }
+  });
+};
+
+const sendPasswordResetEmail = async (userEmail, resetToken) => {
+  const resetUrl = \`\${process.env.FRONTEND_URL}/reset-password?token=\${resetToken}\`;
+  
+  const html = \`
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #539E43;">Password Reset Request</h2>
+      <p>You requested a password reset for your NodeBackend account.</p>
+      <p>Click the button below to reset your password:</p>
+      <a href="\${resetUrl}" style="display: inline-block; padding: 12px 24px; background-color: #539E43; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0;">Reset Password</a>
+      <p>If you didn't request this, please ignore this email.</p>
+      <p>This link will expire in 1 hour.</p>
+    </div>
+  \`;
+  
+  try {
+    const transporter = createTransporter();
+    
+    const mailOptions = {
+      from: process.env.FROM_EMAIL,
+      to: userEmail,
+      subject: 'Password Reset Request',
+      html
+    };
+    
+    const result = await transporter.sendMail(mailOptions);
+    return { success: true, messageId: result.messageId };
+  } catch (error) {
+    console.error('Email send error:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+module.exports = { sendPasswordResetEmail };`;
+
+const routesCode = `// routes/forgotPassword.js - Password Reset Routes
+const express = require('express');
+const { requestPasswordReset, resetPassword } = require('../forgotPassword');
+const { body, validationResult } = require('express-validator');
+const router = express.Router();
+
+// Request password reset
+router.post('/forgot-password', [
+  body('email').isEmail().withMessage('Please provide a valid email')
+], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  
+  await requestPasswordReset(req, res);
+});
+
+// Reset password
+router.post('/reset-password', [
+  body('token').notEmpty().withMessage('Token is required'),
+  body('newPassword').isLength({ min: 6 }).withMessage('Password must be at least 6 characters')
+], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  
+  await resetPassword(req, res);
+});
+
+module.exports = router;`;
+
+export default function ForgotPasswordComponent() {
+  const [activeTab, setActiveTab] = useState("forgot");
+  const [copied, setCopied] = useState("");
+
+  const copyToClipboard = (text: string, type: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(type);
+    setTimeout(() => setCopied(""), 2000);
+  };
+
+  const tabs = [
+    { id: "forgot", label: "Password Reset", code: forgotPasswordCode },
+    { id: "email", label: "Email Service", code: emailServiceCode },
+    { id: "model", label: "User Model", code: userModelCode },
+    { id: "routes", label: "Routes", code: routesCode }
+  ];
+
+  return (
+    <div className="min-h-screen bg-black text-white">
+      
+
+      <div className="max-w-6xl mx-auto px-6 py-8">
+        <div className="flex items-center gap-2 text-sm text-slate-400 mb-6">
+          <Link href="/components" className="hover:text-white">Components</Link>
+          <span>/</span>
+          <Link href="/components/auth" className="hover:text-white">Authentication</Link>
+          <span>/</span>
+          <span>Forgot Password</span>
+        </div>
+
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-2">Forgot Password</h1>
+          <p className="text-slate-400 text-lg mb-4">
+            Secure password reset via email with token validation and expiration
+          </p>
+          
+          <div className="flex flex-wrap gap-2 mb-6">
+            {["Email", "Crypto", "Tokens", "Nodemailer"].map(tag => (
+              <span key={tag} className="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-sm">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">Installation</h2>
+          <div className="space-y-4">
+            <div className="bg-slate-900 border border-slate-700 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-slate-400">Install dependencies</span>
+                <button
+                  onClick={() => copyToClipboard("npm install crypto bcryptjs nodemailer express-validator", "install")}
+                  className="text-sm text-[#539E43] hover:text-[#4a8a3c] transition-colors"
+                >
+                  {copied === "install" ? "Copied!" : "Copy"}
+                </button>
+              </div>
+              <code className="text-sm text-slate-300">npm install crypto bcryptjs nodemailer express-validator</code>
+            </div>
+            
+            <div className="bg-slate-900 border border-slate-700 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-slate-400">API Routes</span>
+                <button
+                  onClick={() => copyToClipboard("POST /auth/forgot-password\nPOST /auth/reset-password", "routes")}
+                  className="text-sm text-[#539E43] hover:text-[#4a8a3c] transition-colors"
+                >
+                  {copied === "routes" ? "Copied!" : "Copy"}
+                </button>
+              </div>
+              <code className="text-sm text-slate-300">
+                POST /auth/forgot-password<br/>
+                POST /auth/reset-password
+              </code>
+            </div>
+          </div>
+        </div>
+
+        <div className="mb-8">
+          <div className="flex border-b border-slate-700 mb-4">
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-4 py-2 text-sm font-medium transition-colors ${
+                  activeTab === tab.id
+                    ? "text-[#539E43] border-b-2 border-[#539E43]"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="bg-slate-900 border border-slate-700 rounded-lg">
+            <div className="flex items-center justify-between p-4 border-b border-slate-700">
+              <span className="text-sm text-slate-400">
+                {tabs.find(t => t.id === activeTab)?.label}
+              </span>
+              <button
+                onClick={() => copyToClipboard(tabs.find(t => t.id === activeTab)?.code || "", activeTab)}
+                className="flex items-center gap-2 px-3 py-1 bg-[#539E43] hover:bg-[#4a8a3c] text-white text-sm rounded transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+                {copied === activeTab ? "Copied!" : "Copy Code"}
+              </button>
+            </div>
+            <pre className="p-4 overflow-x-auto text-sm">
+              <code className="text-slate-300">
+                {tabs.find(t => t.id === activeTab)?.code}
+              </code>
+            </pre>
+          </div>
+        </div>
+
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">Usage</h2>
+          <div className="bg-slate-900 border border-slate-700 rounded-lg p-4">
+            <ol className="text-slate-300 space-y-2 text-sm">
+              <li>1. User requests password reset with email</li>
+              <li>2. System generates secure token and sends email</li>
+              <li>3. User clicks link in email with token</li>
+              <li>4. User enters new password with token</li>
+              <li>5. System validates token and updates password</li>
+            </ol>
+          </div>
+        </div>
+
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Environment Variables</h2>
+          <div className="bg-slate-900 border border-slate-700 rounded-lg p-4">
+            <code className="text-sm text-slate-300">
+              SMTP_HOST=smtp.gmail.com<br/>
+              SMTP_PORT=587<br/>
+              SMTP_USER=your-email@gmail.com<br/>
+              SMTP_PASS=your-app-password<br/>
+              FROM_EMAIL=noreply@yourapp.com<br/>
+              FRONTEND_URL=http://localhost:3000
+            </code>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
