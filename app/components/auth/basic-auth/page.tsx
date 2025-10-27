@@ -168,27 +168,25 @@ export default function BasicAuthComponent() {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white">
-    
-
+    <div className="min-h-screen bg-primary text-primary">
       <div className="max-w-6xl mx-auto px-6 py-8">
-        <div className="flex items-center gap-2 text-sm text-slate-400 mb-6">
-          <Link href="/components" className="hover:text-white">Components</Link>
+        <div className="flex items-center gap-2 text-sm text-secondary mb-6">
+          <Link href="/components" className="hover:text-primary">Components</Link>
           <span>/</span>
-          <Link href="/components/auth" className="hover:text-white">Authentication</Link>
+          <Link href="/components/auth" className="hover:text-primary">Authentication</Link>
           <span>/</span>
           <span>Basic Authentication</span>
         </div>
 
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Basic Authentication</h1>
-          <p className="text-slate-400 text-lg mb-4">
+          <p className="text-secondary text-lg mb-4">
             JWT-based authentication with registration, login, and middleware protection
           </p>
           
           <div className="flex flex-wrap gap-2 mb-6">
             {["JWT", "bcrypt", "Express", "MongoDB"].map(tag => (
-              <span key={tag} className="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-sm">
+              <span key={tag} className="px-3 py-1 bg-surface text-secondary rounded-full text-sm">
                 {tag}
               </span>
             ))}
@@ -198,30 +196,30 @@ export default function BasicAuthComponent() {
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Installation</h2>
           <div className="space-y-4">
-            <div className="bg-slate-900 border border-slate-700 rounded-lg p-4">
+            <div className="bg-surface border border-default rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-slate-400">Install dependencies</span>
+                <span className="text-sm text-secondary">Install dependencies</span>
                 <button
                   onClick={() => copyToClipboard("npm install jsonwebtoken bcryptjs mongoose express", "install")}
-                  className="text-sm text-[#539E43] hover:text-[#4a8a3c] transition-colors"
+                  className="text-sm text-accent hover:text-accent transition-colors"
                 >
                   {copied === "install" ? "Copied!" : "Copy"}
                 </button>
               </div>
-              <code className="text-sm text-slate-300">npm install jsonwebtoken bcryptjs mongoose express</code>
+              <code className="text-sm text-primary">npm install jsonwebtoken bcryptjs mongoose express</code>
             </div>
             
-            <div className="bg-slate-900 border border-slate-700 rounded-lg p-4">
+            <div className="bg-surface border border-default rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-slate-400">API Routes</span>
+                <span className="text-sm text-secondary">API Routes</span>
                 <button
                   onClick={() => copyToClipboard("POST /auth/register\nPOST /auth/login\nGET /auth/profile (protected)", "routes")}
-                  className="text-sm text-[#539E43] hover:text-[#4a8a3c] transition-colors"
+                  className="text-sm text-accent hover:text-accent transition-colors"
                 >
                   {copied === "routes" ? "Copied!" : "Copy"}
                 </button>
               </div>
-              <code className="text-sm text-slate-300">
+              <code className="text-sm text-primary">
                 POST /auth/register<br/>
                 POST /auth/login<br/>
                 GET /auth/profile (protected)
@@ -231,15 +229,15 @@ export default function BasicAuthComponent() {
         </div>
 
         <div className="mb-8">
-          <div className="flex border-b border-slate-700 mb-4">
+          <div className="flex border-b border-default mb-4">
             {tabs.map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`px-4 py-2 text-sm font-medium transition-colors ${
                   activeTab === tab.id
-                    ? "text-[#539E43] border-b-2 border-[#539E43]"
-                    : "text-slate-400 hover:text-white"
+                    ? "text-accent border-b-2 border-accent"
+                    : "text-secondary hover:text-primary"
                 }`}
               >
                 {tab.label}
@@ -247,14 +245,14 @@ export default function BasicAuthComponent() {
             ))}
           </div>
 
-          <div className="bg-slate-900 border border-slate-700 rounded-lg">
-            <div className="flex items-center justify-between p-4 border-b border-slate-700">
-              <span className="text-sm text-slate-400">
+          <div className="bg-surface border border-default rounded-lg">
+            <div className="flex items-center justify-between p-4 border-b border-default">
+              <span className="text-sm text-secondary">
                 {tabs.find(t => t.id === activeTab)?.label}
               </span>
               <button
                 onClick={() => copyToClipboard(tabs.find(t => t.id === activeTab)?.code || "", activeTab)}
-                className="flex items-center gap-2 px-3 py-1 bg-[#539E43] hover:bg-[#4a8a3c] text-white text-sm rounded transition-colors"
+                className="flex items-center gap-2 px-3 py-1 bg-accent hover-accent text-white text-sm rounded transition-colors"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
@@ -263,8 +261,8 @@ export default function BasicAuthComponent() {
                 {copied === activeTab ? "Copied!" : "Copy Code"}
               </button>
             </div>
-            <pre className="p-4 overflow-x-auto text-sm">
-              <code className="text-slate-300">
+            <pre className="p-4 overflow-x-auto text-sm bg-code">
+              <code className="text-primary">
                 {tabs.find(t => t.id === activeTab)?.code}
               </code>
             </pre>
@@ -273,8 +271,8 @@ export default function BasicAuthComponent() {
 
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Usage</h2>
-          <div className="bg-slate-900 border border-slate-700 rounded-lg p-4">
-            <ol className="text-slate-300 space-y-2 text-sm">
+          <div className="bg-surface border border-default rounded-lg p-4">
+            <ol className="text-secondary space-y-2 text-sm">
               <li>1. Create a User model in your models directory</li>
               <li>2. Set up your JWT_SECRET in environment variables</li>
               <li>3. Import and use the auth functions in your routes</li>
@@ -286,8 +284,8 @@ export default function BasicAuthComponent() {
 
         <div>
           <h2 className="text-xl font-semibold mb-4">Environment Variables</h2>
-          <div className="bg-slate-900 border border-slate-700 rounded-lg p-4">
-            <code className="text-sm text-slate-300">
+          <div className="bg-code border border-default rounded-lg p-4">
+            <code className="text-sm text-primary">
               JWT_SECRET=your_super_secret_jwt_key_here<br/>
               MONGODB_URI=mongodb://localhost:27017/your-database
             </code>

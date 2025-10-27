@@ -62,13 +62,11 @@ export default function AuthComponent() {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      
-
+    <div className="min-h-screen bg-primary text-primary">
       <div className="max-w-6xl mx-auto px-6 py-8">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-slate-400 mb-6">
-          <Link href="/components" className="hover:text-white">Components</Link>
+        <div className="flex items-center gap-2 text-sm text-secondary mb-6">
+          <Link href="/components" className="hover:text-primary">Components</Link>
           <span>/</span>
           <span>Authentication</span>
         </div>
@@ -76,13 +74,13 @@ export default function AuthComponent() {
         {/* Component Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Authentication Components</h1>
-          <p className="text-slate-400 text-lg mb-4">
+          <p className="text-secondary text-lg mb-4">
             Complete authentication system with JWT, OAuth, 2FA, and security features
           </p>
           
           <div className="flex flex-wrap gap-2 mb-6">
             {["JWT", "OAuth", "2FA", "Email Verification", "Password Reset"].map(tag => (
-              <span key={tag} className="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-sm">
+              <span key={tag} className="px-3 py-1 bg-surface text-secondary rounded-full text-sm">
                 {tag}
               </span>
             ))}
@@ -95,24 +93,24 @@ export default function AuthComponent() {
             <Link
               key={component.id}
               href={`/components/auth/${component.id}`}
-              className="group block p-6 bg-slate-900 border border-slate-800 rounded-lg hover:border-[#539E43] transition-colors"
+              className="group block p-6 bg-surface border border-default rounded-lg hover:border-accent transition-colors"
             >
               <div className="flex items-start justify-between mb-3">
-                <h3 className="text-lg font-semibold group-hover:text-[#539E43] transition-colors">
+                <h3 className="text-lg font-semibold group-hover:text-accent transition-colors">
                   {component.name}
                 </h3>
-                <svg className="w-5 h-5 text-slate-400 group-hover:text-[#539E43] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-secondary group-hover:text-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </div>
               
-              <p className="text-slate-400 text-sm mb-4">
+              <p className="text-secondary text-sm mb-4">
                 {component.description}
               </p>
               
               <div className="flex flex-wrap gap-1">
                 {component.tags.map(tag => (
-                  <span key={tag} className="text-xs px-2 py-1 bg-slate-800 text-slate-300 rounded">
+                  <span key={tag} className="text-xs px-2 py-1 bg-code text-secondary rounded">
                     {tag}
                   </span>
                 ))}

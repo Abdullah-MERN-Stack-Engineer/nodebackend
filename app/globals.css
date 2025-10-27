@@ -1,32 +1,39 @@
 @import "tailwindcss";
 
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
+  /* Light Theme Colors */
+  --bg-primary: #FFFFFF;
+  --bg-surface: #F5F7FA;
+  --bg-code: #F3F4F6;
+  --text-primary: #111827;
+  --text-secondary: #4B5563;
+  --border: #E5E7EB;
+  --accent: #008236;
+  --accent-hover: #0D542B;
+  --error: #DC2626;
+  --success: #008236;
+  --highlight: #0D542B;
+}
+
+.dark {
+  /* Dark Theme Colors */
+  --bg-primary: black;
+  --bg-surface: #161B22;
+  --bg-code: #1E232A;
+  --text-primary: #E6EDF3;
+  --text-secondary: #9BA3AF;
+  --border: #2D333B;
+  --accent: #008236;
+  --accent-hover: #0D542B;
+  --error: #F85149;
+  --success: #008236;
+  --highlight: #0D542B;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-  
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Custom scrollbar */
@@ -35,23 +42,41 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #1e293b;
+  background: var(--bg-surface);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #475569;
+  background: var(--border);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
+  background: var(--text-secondary);
 }
 
-/* Code syntax highlighting */
+/* Code blocks */
 pre {
-  background: #0f172a !important;
+  background: var(--bg-code) !important;
+  color: var(--text-primary) !important;
 }
 
 code {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  background: var(--bg-code);
+  color: var(--text-primary);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
 }
+
+/* Utility classes */
+.bg-primary { background-color: var(--bg-primary); }
+.bg-surface { background-color: var(--bg-surface); }
+.bg-code { background-color: var(--bg-code); }
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.border-default { border-color: var(--border); }
+.text-accent { color: var(--accent); }
+.bg-accent { background-color: var(--accent); }
+.hover-accent:hover { background-color: var(--accent-hover); }
+.text-error { color: var(--error); }
+.text-success { color: var(--success); }

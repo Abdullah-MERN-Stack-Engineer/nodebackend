@@ -63,9 +63,7 @@ export default function ComponentsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-black text-white">
-     
-
+    <div className="min-h-screen bg-primary text-primary">
       <div className="max-w-6xl mx-auto px-6 py-8">
         {/* Search and Filters */}
         <div className="mb-8">
@@ -74,7 +72,7 @@ export default function ComponentsPage() {
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <div className="flex-1">
               <div className="relative">
-                <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <circle cx="11" cy="11" r="8"/>
                   <path d="m21 21-4.3-4.3"/>
                 </svg>
@@ -83,7 +81,7 @@ export default function ComponentsPage() {
                   placeholder="Search components..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-slate-900 border border-slate-700 rounded-lg focus:ring-2 focus:ring-[#539E43] focus:border-transparent outline-none"
+                  className="w-full pl-10 pr-4 py-2 bg-surface border border-default rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none text-primary"
                 />
               </div>
             </div>
@@ -95,8 +93,8 @@ export default function ComponentsPage() {
                   onClick={() => setSelectedCategory(category)}
                   className={`px-4 py-2 rounded-lg text-sm transition ${
                     selectedCategory === category
-                      ? "bg-[#539E43] text-white"
-                      : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                      ? "bg-accent text-white"
+                      : "bg-surface text-secondary hover:bg-code"
                   }`}
                 >
                   {category}
@@ -112,24 +110,24 @@ export default function ComponentsPage() {
             <Link
               key={component.id}
               href={`/components/${component.id}`}
-              className="group block p-6 bg-slate-900 border border-slate-800 rounded-lg hover:border-[#539E43] transition-colors"
+              className="group block p-6 bg-surface border border-default rounded-lg hover:border-accent transition-colors"
             >
               <div className="flex items-start justify-between mb-3">
-                <h3 className="text-lg font-semibold group-hover:text-[#539E43] transition-colors">
+                <h3 className="text-lg font-semibold group-hover:text-accent transition-colors">
                   {component.name}
                 </h3>
-                <span className="text-xs px-2 py-1 bg-slate-800 text-slate-400 rounded">
+                <span className="text-xs px-2 py-1 bg-code text-secondary rounded">
                   {component.category}
                 </span>
               </div>
               
-              <p className="text-slate-400 text-sm mb-4 line-clamp-2">
+              <p className="text-secondary text-sm mb-4 line-clamp-2">
                 {component.description}
               </p>
               
               <div className="flex flex-wrap gap-1">
                 {component.tags.map(tag => (
-                  <span key={tag} className="text-xs px-2 py-1 bg-slate-800 text-slate-300 rounded">
+                  <span key={tag} className="text-xs px-2 py-1 bg-code text-secondary rounded">
                     {tag}
                   </span>
                 ))}
@@ -140,7 +138,7 @@ export default function ComponentsPage() {
 
         {filteredComponents.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-slate-400">No components found matching your search.</p>
+            <p className="text-secondary">No components found matching your search.</p>
           </div>
         )}
       </div>

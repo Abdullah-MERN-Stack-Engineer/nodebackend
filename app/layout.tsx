@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ThemeProvider>
-          <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white flex flex-col">
+          <div className="min-h-screen bg-primary text-primary flex flex-col transition-colors duration-300">
             <Navbar />
             <main className="flex-1">
               {children}
