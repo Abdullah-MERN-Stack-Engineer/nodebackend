@@ -22,7 +22,7 @@ export default function ComponentsSidebar({ activeComponent }: ComponentsSidebar
   const currentComponent = searchParams.get('component') || 'auth';
 
   return (
-    <div className="w-64 rounded-md bg-surface h-screen sticky top-0 overflow-y-auto">
+    <div className="w-64 ml-6 rounded-md bg-surface h-screen sticky top-10 overflow-y-auto">
       <div className="p-6">
         <h2 className="text-lg font-semibold mb-4">Components</h2>
         <nav className="space-y-2">
