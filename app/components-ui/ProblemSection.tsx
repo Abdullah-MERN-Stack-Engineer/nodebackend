@@ -5,9 +5,9 @@ export default function ProblemSection() {
         <h2 className="text-3xl font-bold mb-6">The Problem We Solve</h2>
         <p className="text-secondary text-lg leading-relaxed">
           Sometimes clients require custom solutions or developers prefer to write logic themselves, 
-          but it's tedious to write the same code again and again. AI also generates buggy code that 
-          we cannot rely upon, and sometimes we don't want to use 3rd party services like Clerk, 
-          Firebase, or Supabase. So here's NodeBackend which gives production-ready and tested 
+          but it&apos;s tedious to write the same code again and again. AI also generates buggy code that 
+          we cannot rely upon, and sometimes we don&apos;t want to use 3rd party services like Clerk, 
+          Firebase, or Supabase. So here&apos;s NodeBackend which gives production-ready and tested 
           backend components with a huge variety of more than 30+ components.
         </p>
       </div>

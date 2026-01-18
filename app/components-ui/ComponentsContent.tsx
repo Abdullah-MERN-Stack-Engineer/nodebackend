@@ -4,8 +4,8 @@ interface ComponentsContentProps {
   activeComponent: string;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  componentsData: any;
-  mainComponents: any[];
+  componentsData: Record<string, Array<{ id: string; name: string; description: string; tags: string[] }>>;
+  mainComponents: Array<{ id: string; name: string }>;
 }
 
 export default function ComponentsContent({ 
@@ -15,7 +15,7 @@ export default function ComponentsContent({
   componentsData, 
   mainComponents 
 }: ComponentsContentProps) {
-  const filteredSubComponents = componentsData[activeComponent as keyof typeof componentsData]?.filter((component: any) =>
+  const filteredSubComponents = componentsData[activeComponent as keyof typeof componentsData]?.filter((component) =>
     component.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     component.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
     component.tags.some((tag: string) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -53,7 +53,7 @@ export default function ComponentsContent({
 
         {/* Components Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredSubComponents.map((component: any) => (
+          {filteredSubComponents.map((component) => (
             <Link
               key={component.id}
               href={`/components/${activeComponent}/${component.id}`}

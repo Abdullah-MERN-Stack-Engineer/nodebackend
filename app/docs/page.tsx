@@ -59,7 +59,7 @@ export default function DocsPage() {
 
             <div className="bg-surface border border-accent/30 rounded-lg p-4 mb-6">
               <p className="text-accent">
-                <strong>💡 Tip:</strong> Start with the Authentication component if you're building a new application. 
+                <strong>💡 Tip:</strong> Start with the Authentication component if you&apos;re building a new application. 
                 It provides the foundation for user management and security.
               </p>
             </div>
