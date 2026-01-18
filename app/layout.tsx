@@ -19,6 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <link rel="shortcut icon" href="./icon.svg" type="image/x-icon" />
       <body className={inter.className}>
         <ThemeProvider>
           <div className="min-h-screen bg-primary text-primary flex flex-col transition-colors duration-300">

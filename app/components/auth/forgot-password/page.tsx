@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 
 const forgotPasswordCode = `// forgotPassword.js - Password Reset
 const crypto = require('crypto');
@@ -120,10 +119,10 @@ const sendPasswordResetEmail = async (userEmail, resetToken) => {
   
   const html = \`
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #539E43;">Password Reset Request</h2>
+      <h2 style="color: #008236;">Password Reset Request</h2>
       <p>You requested a password reset for your NodeBackend account.</p>
       <p>Click the button below to reset your password:</p>
-      <a href="\${resetUrl}" style="display: inline-block; padding: 12px 24px; background-color: #539E43; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0;">Reset Password</a>
+      <a href="\${resetUrl}" style="display: inline-block; padding: 12px 24px; background-color: #008236; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0;">Reset Password</a>
       <p>If you didn't request this, please ignore this email.</p>
       <p>This link will expire in 1 hour.</p>
     </div>
@@ -200,133 +199,94 @@ export default function ForgotPasswordComponent() {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      
-
-      <div className="max-w-6xl mx-auto px-6 py-8">
-        <div className="flex items-center gap-2 text-sm text-slate-400 mb-6">
-          <Link href="/components" className="hover:text-white">Components</Link>
-          <span>/</span>
-          <Link href="/components/auth" className="hover:text-white">Authentication</Link>
-          <span>/</span>
-          <span>Forgot Password</span>
+    <div className="p-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-2 text-primary">Forgot Password</h1>
+        <p className="text-secondary text-lg mb-4">
+          Secure password reset via email with token validation and expiration
+        </p>
+        
+        <div className="flex flex-wrap gap-2 mb-6">
+          {["Email", "Crypto", "Tokens", "Nodemailer"].map(tag => (
+            <span key={tag} className="px-3 py-1 bg-surface text-secondary rounded-full text-sm">
+              {tag}
+            </span>
+          ))}
         </div>
+      </div>
 
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Forgot Password</h1>
-          <p className="text-slate-400 text-lg mb-4">
-            Secure password reset via email with token validation and expiration
-          </p>
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-4 text-primary">Installation</h2>
+        <div className="space-y-4">
+          <div className="bg-surface border border-default rounded-lg p-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm text-secondary">Install dependencies</span>
+              <button
+                onClick={() => copyToClipboard("npm install crypto bcryptjs nodemailer express-validator", "install")}
+                className="text-sm text-accent hover:text-accent transition-colors"
+              >
+                {copied === "install" ? "Copied!" : "Copy"}
+              </button>
+            </div>
+            <code className="text-sm text-primary">npm install crypto bcryptjs nodemailer express-validator</code>
+          </div>
           
-          <div className="flex flex-wrap gap-2 mb-6">
-            {["Email", "Crypto", "Tokens", "Nodemailer"].map(tag => (
-              <span key={tag} className="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-sm">
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Installation</h2>
-          <div className="space-y-4">
-            <div className="bg-slate-900 border border-slate-700 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-slate-400">Install dependencies</span>
-                <button
-                  onClick={() => copyToClipboard("npm install crypto bcryptjs nodemailer express-validator", "install")}
-                  className="text-sm text-[#539E43] hover:text-[#4a8a3c] transition-colors"
-                >
-                  {copied === "install" ? "Copied!" : "Copy"}
-                </button>
-              </div>
-              <code className="text-sm text-slate-300">npm install crypto bcryptjs nodemailer express-validator</code>
-            </div>
-            
-            <div className="bg-slate-900 border border-slate-700 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-slate-400">API Routes</span>
-                <button
-                  onClick={() => copyToClipboard("POST /auth/forgot-password\nPOST /auth/reset-password", "routes")}
-                  className="text-sm text-[#539E43] hover:text-[#4a8a3c] transition-colors"
-                >
-                  {copied === "routes" ? "Copied!" : "Copy"}
-                </button>
-              </div>
-              <code className="text-sm text-slate-300">
-                POST /auth/forgot-password<br/>
-                POST /auth/reset-password
-              </code>
-            </div>
-          </div>
-        </div>
-
-        <div className="mb-8">
-          <div className="flex border-b border-slate-700 mb-4">
-            {tabs.map(tab => (
+          <div className="bg-surface border border-default rounded-lg p-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm text-secondary">API Routes</span>
               <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`px-4 py-2 text-sm font-medium transition-colors ${
-                  activeTab === tab.id
-                    ? "text-[#539E43] border-b-2 border-[#539E43]"
-                    : "text-slate-400 hover:text-white"
-                }`}
+                onClick={() => copyToClipboard("POST /auth/forgot-password\nPOST /auth/reset-password", "routes")}
+                className="text-sm text-accent hover:text-accent transition-colors"
               >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="bg-slate-900 border border-slate-700 rounded-lg">
-            <div className="flex items-center justify-between p-4 border-b border-slate-700">
-              <span className="text-sm text-slate-400">
-                {tabs.find(t => t.id === activeTab)?.label}
-              </span>
-              <button
-                onClick={() => copyToClipboard(tabs.find(t => t.id === activeTab)?.code || "", activeTab)}
-                className="flex items-center gap-2 px-3 py-1 bg-[#539E43] hover:bg-[#4a8a3c] text-white text-sm rounded transition-colors"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-                </svg>
-                {copied === activeTab ? "Copied!" : "Copy Code"}
+                {copied === "routes" ? "Copied!" : "Copy"}
               </button>
             </div>
-            <pre className="p-4 overflow-x-auto text-sm">
-              <code className="text-slate-300">
-                {tabs.find(t => t.id === activeTab)?.code}
-              </code>
-            </pre>
-          </div>
-        </div>
-
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Usage</h2>
-          <div className="bg-slate-900 border border-slate-700 rounded-lg p-4">
-            <ol className="text-slate-300 space-y-2 text-sm">
-              <li>1. User requests password reset with email</li>
-              <li>2. System generates secure token and sends email</li>
-              <li>3. User clicks link in email with token</li>
-              <li>4. User enters new password with token</li>
-              <li>5. System validates token and updates password</li>
-            </ol>
-          </div>
-        </div>
-
-        <div>
-          <h2 className="text-xl font-semibold mb-4">Environment Variables</h2>
-          <div className="bg-slate-900 border border-slate-700 rounded-lg p-4">
-            <code className="text-sm text-slate-300">
-              SMTP_HOST=smtp.gmail.com<br/>
-              SMTP_PORT=587<br/>
-              SMTP_USER=your-email@gmail.com<br/>
-              SMTP_PASS=your-app-password<br/>
-              FROM_EMAIL=noreply@yourapp.com<br/>
-              FRONTEND_URL=http://localhost:3000
+            <code className="text-sm text-primary">
+              POST /auth/forgot-password<br/>
+              POST /auth/reset-password
             </code>
           </div>
+        </div>
+      </div>
+
+      <div className="mb-8">
+        <div className="flex border-b border-default mb-4">
+          {tabs.map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`px-4 py-2 text-sm font-medium transition-colors ${
+                activeTab === tab.id
+                  ? "text-accent border-b-2 border-accent"
+                  : "text-secondary hover:text-primary"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="bg-surface border border-default rounded-lg">
+          <div className="flex items-center justify-between p-4 border-b border-default">
+            <span className="text-sm text-secondary">
+              {tabs.find(t => t.id === activeTab)?.label}
+            </span>
+            <button
+              onClick={() => copyToClipboard(tabs.find(t => t.id === activeTab)?.code || "", activeTab)}
+              className="flex items-center gap-2 px-3 py-1 bg-accent hover-accent text-white text-sm rounded transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"/>
+              </svg>
+              {copied === activeTab ? "Copied!" : "Copy Code"}
+            </button>
+          </div>
+          <pre className="p-4 overflow-x-auto text-sm bg-code">
+            <code className="text-primary">
+              {tabs.find(t => t.id === activeTab)?.code}
+            </code>
+          </pre>
         </div>
       </div>
     </div>

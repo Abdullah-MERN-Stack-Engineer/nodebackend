@@ -7,14 +7,14 @@ export default function DocsPage() {
   const [activeSection, setActiveSection] = useState("getting-started");
 
   const sections = [
-    { id: "getting-started", title: "Getting Started", icon: "🚀" },
-    { id: "installation", title: "Installation", icon: "📦" },
-    { id: "components", title: "Components", icon: "🧩" },
-    { id: "authentication", title: "Authentication", icon: "🔐" },
-    { id: "best-practices", title: "Best Practices", icon: "⭐" },
-    { id: "troubleshooting", title: "Troubleshooting", icon: "🔧" },
-    { id: "api-reference", title: "API Reference", icon: "📚" },
-    { id: "examples", title: "Examples", icon: "💡" }
+    { id: "getting-started", title: "Getting Started"},
+    { id: "installation", title: "Installation"},
+    { id: "components", title: "Components"},
+    { id: "authentication", title: "Authentication"},
+    { id: "best-practices", title: "Best Practices"},
+    { id: "troubleshooting", title: "Troubleshooting"},
+    { id: "api-reference", title: "API Reference"},
+    { id: "examples", title: "Examples"}
   ];
 
   const renderContent = () => {
@@ -223,11 +223,11 @@ NODE_ENV=development`}
 
   return (
     <div className="min-h-screen bg-primary">
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-7xl py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar */}
           <div className="lg:w-64 flex-shrink-0">
-            <div className="bg-surface border border-default rounded-lg p-4 sticky top-8">
+            <div className="bg-surface border h-[700px] border-default rounded-lg p-4 sticky top-8">
               <h2 className="text-lg font-semibold mb-4">Documentation</h2>
               <nav className="space-y-2">
                 {sections.map((section) => (
@@ -240,7 +240,7 @@ NODE_ENV=development`}
                         : 'text-secondary hover:bg-code hover:text-primary'
                     }`}
                   >
-                    <span>{section.icon}</span>
+                    
                     {section.title}
                   </button>
                 ))}

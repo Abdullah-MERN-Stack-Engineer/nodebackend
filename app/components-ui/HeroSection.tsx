@@ -10,12 +10,7 @@ export default function HeroSection({ searchQuery, setSearchQuery, handleSearch 
   return (
     <div className="relative max-w-5xl mx-auto px-6 mt-20">
       {/* Status Badge */}
-      <div className="flex justify-center mb-6">
-        <div className="flex items-center gap-2 border border-default text-primary rounded-full px-4 py-2 bg-surface backdrop-blur">
-          <div className="size-2.5 bg-success bg-accent rounded-full animate-pulse"></div>
-          <span className="text-sm">30+ Production-Ready Components</span>
-        </div>
-      </div>
+      
 
       {/* Main Heading */}
       <div className="text-center mb-8">

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 
 const emailCode = `// email.js - Basic Email Service
 const nodemailer = require('nodemailer');
@@ -126,128 +125,116 @@ export default function BasicEmailComponent() {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white">
-     
-
-      <div className="max-w-6xl mx-auto px-6 py-8">
-        <div className="flex items-center gap-2 text-sm text-slate-400 mb-6">
-          <Link href="/components" className="hover:text-white">Components</Link>
-          <span>/</span>
-          <Link href="/components/email" className="hover:text-white">Email Service</Link>
-          <span>/</span>
-          <span>Basic Email Service</span>
+    <div className="p-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-2 text-primary">Basic Email Service</h1>
+        <p className="text-secondary text-lg mb-4">
+          Send emails with Nodemailer and SMTP configuration for Gmail, SendGrid, and Mailgun
+        </p>
+        
+        <div className="flex flex-wrap gap-2 mb-6">
+          {["Nodemailer", "SMTP", "Gmail", "SendGrid"].map(tag => (
+            <span key={tag} className="px-3 py-1 bg-surface text-secondary rounded-full text-sm">
+              {tag}
+            </span>
+          ))}
         </div>
+      </div>
 
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Basic Email Service</h1>
-          <p className="text-slate-400 text-lg mb-4">
-            Send emails with Nodemailer and SMTP configuration for Gmail, SendGrid, and Mailgun
-          </p>
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-4 text-primary">Installation</h2>
+        <div className="space-y-4">
+          <div className="bg-surface border border-default rounded-lg p-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm text-secondary">Install dependencies</span>
+              <button
+                onClick={() => copyToClipboard("npm install nodemailer", "install")}
+                className="text-sm text-accent hover:text-accent transition-colors"
+              >
+                {copied === "install" ? "Copied!" : "Copy"}
+              </button>
+            </div>
+            <code className="text-sm text-primary">npm install nodemailer</code>
+          </div>
           
-          <div className="flex flex-wrap gap-2 mb-6">
-            {["Nodemailer", "SMTP", "Gmail", "SendGrid"].map(tag => (
-              <span key={tag} className="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-sm">
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Installation</h2>
-          <div className="space-y-4">
-            <div className="bg-slate-900 border border-slate-700 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-slate-400">Install dependencies</span>
-                <button
-                  onClick={() => copyToClipboard("npm install nodemailer", "install")}
-                  className="text-sm text-[#539E43] hover:text-[#4a8a3c] transition-colors"
-                >
-                  {copied === "install" ? "Copied!" : "Copy"}
-                </button>
-              </div>
-              <code className="text-sm text-slate-300">npm install nodemailer</code>
-            </div>
-            
-            <div className="bg-slate-900 border border-slate-700 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-slate-400">API Routes</span>
-                <button
-                  onClick={() => copyToClipboard("POST /email/send", "routes")}
-                  className="text-sm text-[#539E43] hover:text-[#4a8a3c] transition-colors"
-                >
-                  {copied === "routes" ? "Copied!" : "Copy"}
-                </button>
-              </div>
-              <code className="text-sm text-slate-300">POST /email/send</code>
-            </div>
-          </div>
-        </div>
-
-        <div className="mb-8">
-          <div className="flex border-b border-slate-700 mb-4">
-            {tabs.map(tab => (
+          <div className="bg-surface border border-default rounded-lg p-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm text-secondary">API Routes</span>
               <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`px-4 py-2 text-sm font-medium transition-colors ${
-                  activeTab === tab.id
-                    ? "text-[#539E43] border-b-2 border-[#539E43]"
-                    : "text-slate-400 hover:text-white"
-                }`}
+                onClick={() => copyToClipboard("POST /email/send", "routes")}
+                className="text-sm text-accent hover:text-accent transition-colors"
               >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="bg-slate-900 border border-slate-700 rounded-lg">
-            <div className="flex items-center justify-between p-4 border-b border-slate-700">
-              <span className="text-sm text-slate-400">
-                {tabs.find(t => t.id === activeTab)?.label}
-              </span>
-              <button
-                onClick={() => copyToClipboard(tabs.find(t => t.id === activeTab)?.code || "", activeTab)}
-                className="flex items-center gap-2 px-3 py-1 bg-[#539E43] hover:bg-[#4a8a3c] text-white text-sm rounded transition-colors"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-                </svg>
-                {copied === activeTab ? "Copied!" : "Copy Code"}
+                {copied === "routes" ? "Copied!" : "Copy"}
               </button>
             </div>
-            <pre className="p-4 overflow-x-auto text-sm">
-              <code className="text-slate-300">
-                {tabs.find(t => t.id === activeTab)?.code}
-              </code>
-            </pre>
+            <code className="text-sm text-primary">POST /email/send</code>
           </div>
         </div>
+      </div>
 
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Usage</h2>
-          <div className="bg-slate-900 border border-slate-700 rounded-lg p-4">
-            <ol className="text-slate-300 space-y-2 text-sm">
-              <li>1. Configure SMTP settings in environment variables</li>
-              <li>2. Import and use sendEmail function in your routes</li>
-              <li>3. Send POST request to /email/send with to, subject, and html</li>
-              <li>4. Handle success/error responses appropriately</li>
-            </ol>
-          </div>
+      <div className="mb-8">
+        <div className="flex border-b border-default mb-4">
+          {tabs.map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`px-4 py-2 text-sm font-medium transition-colors ${
+                activeTab === tab.id
+                  ? "text-accent border-b-2 border-accent"
+                  : "text-secondary hover:text-primary"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
 
-        <div>
-          <h2 className="text-xl font-semibold mb-4">Environment Variables</h2>
-          <div className="bg-slate-900 border border-slate-700 rounded-lg p-4">
-            <code className="text-sm text-slate-300">
-              SMTP_HOST=smtp.gmail.com<br/>
-              SMTP_PORT=587<br/>
-              SMTP_USER=your-email@gmail.com<br/>
-              SMTP_PASS=your-app-password<br/>
-              FROM_EMAIL=noreply@yourapp.com
+        <div className="bg-surface border border-default rounded-lg">
+          <div className="flex items-center justify-between p-4 border-b border-default">
+            <span className="text-sm text-secondary">
+              {tabs.find(t => t.id === activeTab)?.label}
+            </span>
+            <button
+              onClick={() => copyToClipboard(tabs.find(t => t.id === activeTab)?.code || "", activeTab)}
+              className="flex items-center gap-2 px-3 py-1 bg-accent hover-accent text-white text-sm rounded transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"/>
+              </svg>
+              {copied === activeTab ? "Copied!" : "Copy Code"}
+            </button>
+          </div>
+          <pre className="p-4 overflow-x-auto text-sm bg-code">
+            <code className="text-primary">
+              {tabs.find(t => t.id === activeTab)?.code}
             </code>
-          </div>
+          </pre>
+        </div>
+      </div>
+
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-4 text-primary">Usage</h2>
+        <div className="bg-surface border border-default rounded-lg p-4">
+          <ol className="text-secondary space-y-2 text-sm">
+            <li>1. Configure SMTP settings in environment variables</li>
+            <li>2. Import and use sendEmail function in your routes</li>
+            <li>3. Send POST request to /email/send with to, subject, and html</li>
+            <li>4. Handle success/error responses appropriately</li>
+          </ol>
+        </div>
+      </div>
+
+      <div>
+        <h2 className="text-xl font-semibold mb-4 text-primary">Environment Variables</h2>
+        <div className="bg-surface border border-default rounded-lg p-4">
+          <code className="text-sm text-primary">
+            SMTP_HOST=smtp.gmail.com<br/>
+            SMTP_PORT=587<br/>
+            SMTP_USER=your-email@gmail.com<br/>
+            SMTP_PASS=your-app-password<br/>
+            FROM_EMAIL=noreply@yourapp.com
+          </code>
         </div>
       </div>
     </div>

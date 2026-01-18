@@ -30,10 +30,40 @@
   --highlight: #0D542B;
 }
 
+[data-theme="dark"] {
+  --bg-primary: black;
+  --bg-surface: #161B22;
+  --bg-code: #1E232A;
+  --text-primary: #E6EDF3;
+  --text-secondary: #9BA3AF;
+  --border: #2D333B;
+}
+
+[data-theme="light"] {
+  --bg-primary: #FFFFFF;
+  --bg-surface: #F5F7FA;
+  --bg-code: #F3F4F6;
+  --text-primary: #111827;
+  --text-secondary: #4B5563;
+  --border: #E5E7EB;
+}
+
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Theme persistence */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg-primary: black;
+    --bg-surface: #161B22;
+    --bg-code: #1E232A;
+    --text-primary: #E6EDF3;
+    --text-secondary: #9BA3AF;
+    --border: #2D333B;
+  }
 }
 
 /* Custom scrollbar */
