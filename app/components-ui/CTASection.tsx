@@ -8,7 +8,7 @@ export default function CTASection() {
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl font-bold mb-4">Want More Components?</h2>
           <p className="text-secondary mb-8">
-            Missing a component you need? We're constantly adding new production-ready components based on developer feedback.
+            Missing a component you need? We are constantly adding new production-ready components based on developer feedback.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
